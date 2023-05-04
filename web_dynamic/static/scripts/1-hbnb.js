@@ -1,20 +1,18 @@
 $(document).ready(() => {
-    let filterAmenities = ["hi"];
+    let filterAmenities = [];
 
-    amenities_input = $('.amenities .popover input')
-
-    $.each(amenities_input, function (index, input) {
-        input.on('change', function () {
-            if ($(this).checked) {
-                filterAmenities.push("this.attr('data-id')");
+    $('input').each(function(){
+        $(this).change(function(){
+            if ($(this).prop('checked')) {
+                filterAmenities.push($(this).attr('data-name'));
             }
-            else {
-                const filter = filterAmenities.filter((id) => {
-                    return id != "this.attr('data-id')";
+            else{
+                let filter = filterAmenities.filter((value)=>{
+                    return value != $(this).attr('data-name')
                 });
                 filterAmenities = filter;
             }
             $('.amenities>h4').text(filterAmenities.toString());
-        });
+        })
     });
 });
