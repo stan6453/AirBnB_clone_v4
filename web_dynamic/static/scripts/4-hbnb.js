@@ -1,9 +1,19 @@
 $(document).ready(() => {
 
-    
+    //show status of the airbnb api route as a red dot if reachable esle, a grey dot if down
+    $.getJSON('http://0.0.0.0:5001/api/v1/status/', (data, status) => {
+        if (data.status == 'OK') {
+            $('div#api_status').addClass('available');
+        }
+        else {
+            $('div#api_status').removeClass('available');
+        }
+    });
+
+
     function populatePlaces(amenities) {
         if (amenities) {
-            data = { amenities:amenities };
+            data = { amenities: amenities };
         } else {
             data = {};
         }
@@ -44,7 +54,7 @@ $(document).ready(() => {
 
     // Attach an event listener to all amenities checkbox filters
     let filterAmenities = [];
-    let filterAmenities_id =[];
+    let filterAmenities_id = [];
     $('input').each(function () {
         $(this).change(function () {
             if ($(this).prop('checked')) {
@@ -63,17 +73,10 @@ $(document).ready(() => {
                 filterAmenities_id = filter_id;
             }
             $('.amenities>h4').text(filterAmenities.toString());
-            populatePlaces(filterAmenities_id);
         })
     });
 
-    //show status of the airbnb api route as a red dot if reachable esle, a grey dot if down
-    $.getJSON('http://0.0.0.0:5001/api/v1/status/', (data, status) => {
-        if (data.status == 'OK') {
-            $('div#api_status').addClass('available');
-        }
-        else {
-            $('div#api_status').removeClass('available');
-        }
-    });
+    $('.filters>button').click(() => { 
+        populatePlaces(filterAmenities_id); 
+    })
 });
